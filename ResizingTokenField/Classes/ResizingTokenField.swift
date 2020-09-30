@@ -577,6 +577,12 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
     // MARK: - UICollectionViewDelegate
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let token = viewModel.token(atIndexPath: indexPath)
+        if delegate?.resizingTokenField(self, didSelectToken: token) == true {
+            collectionView.deselectItem(at: indexPath, animated: true)
+            return
+        }
+        
         if let cell = collectionView.cellForItem(at: indexPath) as? ResizingTokenFieldTokenCell {
             _ = cell.becomeFirstResponder()
         }

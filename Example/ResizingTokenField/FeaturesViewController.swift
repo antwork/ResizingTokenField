@@ -107,6 +107,11 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate, ResizingTok
         return nil
     }
     
+    func resizingTokenField(_ tokenField: ResizingTokenField, didSelectToken token: ResizingTokenFieldToken?) -> Bool {
+        print(token?.title ?? "")
+        return true
+    }
+    
     // MARK: - UITextFieldDelegate
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

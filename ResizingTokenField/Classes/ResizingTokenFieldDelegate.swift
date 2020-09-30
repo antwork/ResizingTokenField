@@ -87,6 +87,19 @@ public protocol ResizingTokenFieldDelegate: AnyObject {
     /// - Returns: Configuration of the cell.
     func resizingTokenField(_ tokenField: ResizingTokenField, configurationForDefaultCellRepresenting token: ResizingTokenFieldToken) -> DefaultTokenCellConfiguration?
     
+    /// Return true if want to handle token  selection by yourself, default is false
+    /// - Parameters:
+    ///   - tokenField: Token field selected.
+    ///   - didSelectToken: selected token
+    func resizingTokenField(_ tokenField: ResizingTokenField, didSelectToken token: ResizingTokenFieldToken?) -> Bool
+}
+
+extension ResizingTokenFieldDelegate {
+    
+    // default return false
+    public func resizingTokenField(_ tokenField: ResizingTokenField, didSelectToken token: ResizingTokenFieldToken?) -> Bool {
+        return false
+    }
 }
 
 /// Default implementations for optional methods.
