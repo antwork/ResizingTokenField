@@ -43,7 +43,8 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate, ResizingTok
         tokenField.shouldTextInputRemoveTokensAnimated = animateSwitch.isOn
         tokenField.shouldExpandTokensAnimated = animateSwitch.isOn
         tokenField.shouldCollapseTokensAnimated = animateSwitch.isOn
-
+        tokenField.minHeight = 37
+        
         let placeholder = "Type here…"
         tokenField.placeholder = placeholder
         tokenField.textFieldMinWidth = placeholder.width(withFont: tokenField.font)
@@ -129,6 +130,10 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate, ResizingTok
     
     @IBAction func didTapToggleLabelButton(_ sender: UIButton) {
         tokenField.isShowingLabel ? tokenField.hideLabel(animated: animateSwitch.isOn) : tokenField.showLabel(animated: animateSwitch.isOn)
+    }
+    
+    @IBAction func didTapToggleTextFieldButton(_ sender: Any) {
+        tokenField.isShowingTextField ? tokenField.hideTextField(animated: animateSwitch.isOn) : tokenField.showTextField(animated: animateSwitch.isOn)
     }
     
     @IBAction func didTapToggleCollapsedButton(_ sender: UIButton) {

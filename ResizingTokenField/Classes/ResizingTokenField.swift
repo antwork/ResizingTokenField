@@ -53,6 +53,12 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
     /// Boolean value, indicating if label is shown.
     public var isShowingLabel: Bool { return viewModel.isShowingLabelCell }
     
+    /// Boolean value, indicating if textField is shown.
+    public var isShowingTextField: Bool { return viewModel.isShowingTextField }
+    
+    /// custom min height of TokenField
+    public var minHeight: CGFloat?
+    
     /// Text to display in the label at the start.
     public var labelText: String? {
         get { return viewModel.labelCellText }
@@ -287,6 +293,43 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
         } else {
             UIView.performWithoutAnimation {
                 visible ? self.collectionView.insertItems(at: [self.viewModel.labelCellIndexPath]) : self.collectionView.deleteItems(at: [self.viewModel.labelCellIndexPath])
+            }
+        }
+    }
+    
+    // MARK: - Toggle TextField
+    
+    public func showTextField(animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
+        toggleTextFieldCell(visible: true, animated: animated, completion: completion)
+    }
+    
+    public func hideTextField(animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
+        toggleTextFieldCell(visible: false, animated: animated, completion: completion)
+    }
+    
+    /// Shows/hides the label cell.
+    private func toggleTextFieldCell(visible: Bool, animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
+        guard viewModel.isShowingTextField != visible else {
+            completion?(true)
+            return
+        }
+        
+        let textFieldCellIndexPath = viewModel.textFieldCellIndexPath
+        viewModel.isShowingTextField = visible
+        
+        guard isCollectionViewLoaded else {
+            // Collection view initial load was not performed yet, items will be correctly configured there.
+            completion?(true)
+            return
+        }
+        
+        if animated {
+            UIView.animate(withDuration: animationDuration, animations: {
+                visible ? self.collectionView.insertItems(at: [textFieldCellIndexPath]) : self.collectionView.deleteItems(at: [textFieldCellIndexPath])
+            }, completion: completion)
+        } else {
+            UIView.performWithoutAnimation {
+                visible ? self.collectionView.insertItems(at: [textFieldCellIndexPath]) : self.collectionView.deleteItems(at: [textFieldCellIndexPath])
             }
         }
     }
@@ -577,6 +620,8 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
             intrinsicContentHeight = newHeight
             return
         }
+        
+        if let minH = minHeight, newHeight < minH { return }
         
         delegate?.resizingTokenField(self, willChangeIntrinsicHeight: newHeight)
         intrinsicContentHeight = newHeight

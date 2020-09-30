@@ -26,6 +26,7 @@ class ResizingTokenFieldViewModel {
     // MARK: - Label cell
     
     var isShowingLabelCell: Bool = true
+    var isShowingTextField: Bool = true
     var labelCellText: String?
     
     var labelCellIndexPath: IndexPath {
@@ -41,7 +42,11 @@ class ResizingTokenFieldViewModel {
     
     var textFieldCellIndexPath: IndexPath {
         // The last cell
-        return IndexPath(item: numberOfItems - 1, section: 0)
+        if isShowingTextField {
+            return IndexPath(item: numberOfItems - 1, section: 0)
+        } else {
+            return IndexPath(item: numberOfItems, section: 0)
+        }
     }
     
     // The smallest allowed size of the text field cell.
@@ -159,7 +164,8 @@ class ResizingTokenFieldViewModel {
     // MARK: - Data source
     
     var numberOfItems: Int {
-        var count = tokensToDisplayCount + 1    // Tokens + text field cell
+        var count = tokensToDisplayCount    // Tokens
+        if isShowingTextField { count += 1 } // text field cell
         if isShowingLabelCell { count += 1 }    // Label cell
         return count
     }
